@@ -6,13 +6,15 @@ namespace Lindowx\PHPArrayHash;
 
 final class ArrayHash
 {
+    const OPT_NIA_IGNORE_ORDER = 0x00000001;
+
     /**
      * @param array $arr
      * @param callable $walkFunc
      * @param array $path
      * @return void
      */
-    protected static function arrayWalkRecursive(array $arr, callable $walkFunc, &$path = [])
+    private static function arrayWalkRecursive(array $arr, callable $walkFunc, array &$path = [])
     {
         foreach ($arr as $key => $value) {
             $path[] = $key;
@@ -30,16 +32,22 @@ final class ArrayHash
      *
      * @param array $arr
      * @param callable $func
+     * @param int $options
      * @return string
      */
-    public static function hash(array $arr, callable $func)
+    public static function hash(array $arr, callable $func, int $options = 0): string
     {
         $flat = [];
-        self::arrayWalkRecursive($arr, function ($path, $value) use (& $flat) {
+        self::arrayWalkRecursive($arr, function ($path, $value) use (& $flat, & $options) {
             if (is_object($value)) {
                 $value = serialize($value);
             }
-            $flat[implode('.', $path)] = $value;
+
+            if ($options & self::OPT_NIA_IGNORE_ORDER) {
+                $flat[$value] = '1';
+            } else {
+                $flat[implode('.', $path)] = $value;
+            }
         });
 
         ksort($flat);
