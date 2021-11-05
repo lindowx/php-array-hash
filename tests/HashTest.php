@@ -6,30 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 class HashTest extends TestCase
 {
-    public function testABC(): void
-    {
-        $arr1 = [
-            'a' => 3,
-            'b' => 'hello, world',
-            'c' => [
-                [1, 2, 3],
-                [4, 5, 6],
-            ],
-        ];
-
-        $arr2 = [
-            'a' => 3,
-            'b' => 'hello, world',
-            'c' => [
-                [4, 6, 5],
-                [3, 1, 2],
-            ],
-        ];
-
-        var_dump(ArrayHash::hash($arr1, 'sha1', ArrayHash::OPT_NIA_IGNORE_ORDER));
-        var_dump(ArrayHash::hash($arr2, 'sha1', ArrayHash::OPT_NIA_IGNORE_ORDER));
-    }
-
     public function testAssocHash(): void
     {
         $arr1 = [
